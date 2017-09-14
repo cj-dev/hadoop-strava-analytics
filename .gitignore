@@ -52,3 +52,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# vim
+*.swo
+*.swp
