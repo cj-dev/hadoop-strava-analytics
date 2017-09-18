@@ -5,24 +5,28 @@ import datetime
 import time
 
 from matplotlib import pyplot
+from matplotlib import dates as ppdates
 import numpy
-
-current_day = ""
-day_total_time = 0
-day_total_entries = 0
-day_efforts = {}
 
 def timestring_to_seconds(time):
     h, m, s = time.split(":")
     return int(h)*3600 + int(m)*60 + int(s)
 
-def plotit(date, efforts):
+def plot_1d(date, efforts):
     times = list(efforts.values())
     pyplot.plot(times,
             numpy.zeros_like(times),
             "x"
     )
     pyplot.suptitle("Efforts on {date}".format(date=date))
+    pyplot.show()
+
+def plot_2d(summaries):
+    dates = [ppdates.datestr2num(date) for date in summaries.keys()]
+    averages = list(summaries.values())
+    pyplot.plot(dates,
+            averages
+            )
     pyplot.show()
 
 def filter_outliers_iqr(efforts):
@@ -43,13 +47,25 @@ def filter_outliers_iqr(efforts):
 def filter_outliers_distance(efforts):
     pass
 
-def summarize_efforts(date, efforts, plot=False):
+def summarize_day_efforts(date, efforts, plot=False):
     print(date,
             len(efforts),
             sum(efforts.values()),
             sum(efforts.values())/len(efforts))
     if plot:
-        plotit(date, efforts)
+        plot_1d(date, efforts)
+
+def summarize_timerange(summaries, plot=False):
+    print("From date {begin} to {end}".format(
+        begin=list(summaries.keys())[0], end=list(summaries.keys())[-1]))
+    for date, average in summaries.items():
+        print(date, average)
+    if plot:
+        plot_2d(summaries)
+
+current_day = ""
+day_efforts = {}
+summaries = {}
 
 for line in sys.stdin:
     key, elapsed_time = line.split()
@@ -61,8 +77,9 @@ for line in sys.stdin:
     else:
         if current_day:
             filtered_efforts = filter_outliers_iqr(day_efforts)
-            summarize_efforts(current_day, filtered_efforts)
+            summaries[date] = sum(filtered_efforts.values())/len(filtered_efforts)
         current_day = date
         day_efforts = {}
 
-summarize_efforts(current_day, filtered_efforts)
+summarize_timerange(summaries, plot=True)
+
