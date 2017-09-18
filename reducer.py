@@ -13,7 +13,7 @@ def summarize_day_efforts(efforts, date=None, plot=False):
             num_efforts=len(efforts),
             median=median(list(efforts.values()))))
     if plot:
-        maths_util.plot_1d(date, efforts)
+        maths_util.plot_1d(efforts, date)
 
 def summarize_timerange(summaries, plot=False):
     print("From date {begin} to {end}".format(
@@ -30,7 +30,8 @@ summaries = {}
 for line in sys.stdin:
     key, elapsed_time = line.split()
     elapsed_seconds = maths_util.timestring_to_seconds(elapsed_time)
-    date, effort_id = key.split("#")
+    date_str, effort_id = key.split("#")
+    date = datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
 
     if current_day == date:
         day_efforts[effort_id] = elapsed_seconds

@@ -6,21 +6,24 @@ def timestring_to_seconds(time):
     h, m, s = time.split(":")
     return int(h)*3600 + int(m)*60 + int(s)
 
-def plot_1d(date, efforts):
+def plot_1d(efforts, date=None):
     times = list(efforts.values())
     pyplot.plot(times,
             numpy.zeros_like(times),
             "x"
     )
-    pyplot.suptitle("Efforts on {date}".format(date=date))
+    pyplot.suptitle("Efforts on {date}".format(date=date if date else "Some day"))
     pyplot.show()
 
 def plot_2d(summaries):
-    dates = [ppdates.datestr2num(date) for date in summaries.keys()]
+    dates = list(summaries.keys())
     values = list(summaries.values())
+    pyplot.gca().xaxis.set_major_formatter(ppdates.DateFormatter('%m/%d/%Y'))
+    pyplot.gca().xaxis.set_major_locator(ppdates.DayLocator())
     pyplot.plot(dates,
             values
             )
+    pyplot.gcf().autofmt_xdate()
     pyplot.show()
 
 def filter_outliers_iqr(efforts):
