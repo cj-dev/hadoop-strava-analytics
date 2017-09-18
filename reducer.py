@@ -5,6 +5,7 @@ import datetime
 import time
 
 import maths_util
+from statistics import median
 
 def summarize_day_efforts(date, efforts, plot=False):
     print(date,
@@ -36,7 +37,7 @@ for line in sys.stdin:
     else:
         if current_day:
             filtered_efforts = maths_util.filter_outliers_iqr(day_efforts)
-            summaries[date] = sum(filtered_efforts.values())/len(filtered_efforts)
+            summaries[date] = median(list(filtered_efforts.values()))
         current_day = date
         day_efforts = {}
 
