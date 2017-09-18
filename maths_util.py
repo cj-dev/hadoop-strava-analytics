@@ -30,7 +30,7 @@ def filter_outliers_iqr(efforts):
 
     filtered = {}
     for e_id, time in efforts.items():
-        if time > q25 - 1.5*iqr and time < q75 + 1.5*iqr:
+        if time >= q25 - 1.5*iqr and time <= q75 + 1.5*iqr:
             filtered[e_id] = time
         # else:
         #     print("Filtered item {e_id} for time of {time}".format(
