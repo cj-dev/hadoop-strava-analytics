@@ -7,11 +7,11 @@ import time
 import maths_util
 from statistics import median
 
-def summarize_day_efforts(date, efforts, plot=False):
-    print(date,
-            len(efforts),
-            sum(efforts.values()),
-            sum(efforts.values())/len(efforts))
+def summarize_day_efforts(efforts, date=None, plot=False):
+    print("{date}: {num_efforts} with median elapsed time {median}".format(
+            date=date if date else "",
+            num_efforts=len(efforts),
+            median=median(list(efforts.values()))))
     if plot:
         maths_util.plot_1d(date, efforts)
 
