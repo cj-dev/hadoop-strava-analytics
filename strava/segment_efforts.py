@@ -25,7 +25,7 @@ if __name__ == "__main__":
             start_date_local=lower_date_limit,
             end_date_local=upper_date_limit)
 
-    filename = 'results-{0}.json'.format(segment_id)
+    filename = 'efforts-{0}.json'.format(segment_id)
     with open(filename, 'w') as result_file:
         for e in efforts:
             effort_dict = {
