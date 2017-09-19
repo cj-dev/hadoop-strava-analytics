@@ -16,8 +16,6 @@ def summarize_day_efforts(efforts, date=None, plot=False):
         maths_util.plot_1d(efforts, date)
 
 def summarize_timerange(summaries, plot=False):
-    print("From date {begin} to {end}".format(
-        begin=list(summaries.keys())[0], end=list(summaries.keys())[-1]))
     for date, average in summaries.items():
         print(date, average)
     if plot:
@@ -42,5 +40,5 @@ for line in sys.stdin:
         current_day = date
         day_efforts = {}
 
-summarize_timerange(summaries, plot=True)
+summarize_timerange(summaries, plot=False)
 
